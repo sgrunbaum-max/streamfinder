@@ -159,7 +159,8 @@ Contame qué tenés ganas de ver: género, si querés película o serie, algo nu
       document.getElementById('sendBtn').disabled = true;
       showTyping();
       try {
-        const res = await fetch(WEBHOOK_URL, {
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(WEBHOOK_URL);
+        const res = await fetch(proxyUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: text, query: text })
@@ -170,7 +171,7 @@ Contame qué tenés ganas de ver: género, si querés película o serie, algo nu
         appendMessage('bot', reply);
       } catch (err) {
         removeTyping();
-        appendMessage('bot', '⚠️ Hubo un problema conectando con el servidor. Verificá que el workflow en n8n esté activo (toggle verde).');
+        appendMessage('bot', '⚠️ Error: ' + err.message);
       }
       document.getElementById('sendBtn').disabled = false;
     }
